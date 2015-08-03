@@ -1,0 +1,55 @@
+<idea-plugin version="2">
+    <id>io.github.francoiscambell.clionarduinoplugin</id>
+    <name>Arduino</name>
+    <version>1.0</version>
+    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+
+    <description><![CDATA[
+      Registers .ino and .pde files as C/C++ sources
+    ]]></description>
+
+    <change-notes><![CDATA[
+      Add change notes here.<br>
+      <em>most HTML tags may be used</em>
+    ]]>
+    </change-notes>
+
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->
+    <idea-version since-build="131"/>
+
+    <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Plugin+Compatibility+with+IntelliJ+Platform+Products
+         on how to target different products -->
+    <depends>com.intellij.modules.clion</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Add your extensions here -->
+    </extensions>
+
+    <application-components>
+        <!-- Add your application components here -->
+        <component>
+            <implementation-class>io.github.francoiscambell.clionarduinoplugin.filetypes.ArduinoFileTypeRegistration
+            </implementation-class>
+        </component>
+    </application-components>
+
+    <project-components>
+        <!-- Add your project components here -->
+    </project-components>
+
+    <actions>
+        <!-- Add your actions here -->
+        <action id="Sketch.New" class="io.github.francoiscambell.clionarduinoplugin.actions.NewSketchFile"
+                text="Arduino Sketch" description="New Arduino Sketch File"
+                icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
+            <add-to-group group-id="NewGroup" anchor="last"/>
+        </action>
+        <action id="SketchProject.Convert"
+                class="io.github.francoiscambell.clionarduinoplugin.actions.ConvertToSketchProject"
+                text="Convert to Arduino Sketch project" description="Converts a CMake project to an Arduino Sketch"
+                icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
+</idea-plugin>
