@@ -23,24 +23,35 @@ public class NewSketchFile extends AnAction {
             return;
         }
 
-        ApplicationManager.getApplication().runWriteAction(() -> {
-            //create sketch file
-            PsiFile sketch = directory.createFile("test3.ino");
-            Document sketchDocument = PsiDocumentManager.getInstance(project).getDocument(sketch);
-            CommandProcessor.getInstance().executeCommand(project, () -> {
-                sketchDocument.setText("#include <Arduino.h>\n\nvoid setup() {\n\n}\n\nvoid loop() {\n\n}");
-            }, null, null, sketchDocument);
+        ApplicationManager.getApplication().runWriteAction(new Runnable() {
+            @Override
+            public void run() {
+                //create sketch file
+                PsiFile sketch = directory.createFile("test3.ino");
+                final Document sketchDocument = PsiDocumentManager.getInstance(project).getDocument(sketch);
+                CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+                    @Override
+                    public void run() {
+                        sketchDocument.setText("#include <Arduino.h>\n\nvoid setup() {\n\n}\n\nvoid loop() {\n\n}");
+                    }
+                }, null, null, sketchDocument);
 
-            //add the file to CMakeLists.txt sources
-            VirtualFile cmakeLists = project.getBaseDir().findChild("CMakeLists.txt");
-            PsiFile cmakeListsPsiFile = PsiManager.getInstance(project).findFile(cmakeLists);
-            Document cmakeListsDocument = PsiDocumentManager.getInstance(project).getDocument(cmakeListsPsiFile);
-            CommandProcessor.getInstance().executeCommand(project, () -> {
-                cmakeListsDocument.insertString(cmakeListsDocument.getTextLength(), "\nset(SOURCE_FILES test3.ino)");
-            }, null, null, cmakeListsDocument);
+                //add the file to CMakeLists.txt sources
+                VirtualFile cmakeLists = project.getBaseDir().findChild("CMakeLists.txt");
+                PsiFile cmakeListsPsiFile = PsiManager.getInstance(project).findFile(cmakeLists);
+                final Document cmakeListsDocument = PsiDocumentManager.getInstance(project)
+                                                                      .getDocument(cmakeListsPsiFile);
+                CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+                    @Override
+                    public void run() {
+                        cmakeListsDocument
+                                .insertString(cmakeListsDocument.getTextLength(), "\nset(SOURCE_FILES test3.ino)");
+                    }
+                }, null, null, cmakeListsDocument);
 
-            //open the file in the editor
-            FileEditorManager.getInstance(project).openFile(sketch.getVirtualFile(), true, true);
+                //open the file in the editor
+                FileEditorManager.getInstance(project).openFile(sketch.getVirtualFile(), true, true);
+            }
         });
     }
 }

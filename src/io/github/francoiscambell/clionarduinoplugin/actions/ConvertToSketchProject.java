@@ -19,67 +19,93 @@ public class ConvertToSketchProject extends AnAction {
     public void actionPerformed(AnActionEvent e) {
         // TODO: insert action logic here
         final Project project = e.getRequiredData(CommonDataKeys.PROJECT);
-        PsiDirectory projectRootDirectory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
+        final PsiDirectory projectRootDirectory = PsiManager.getInstance(project).findDirectory(project.getBaseDir());
         PsiDocumentManager psiDocumentManager = PsiDocumentManager.getInstance(project);
 
-        String projectName = project.getName();
+        final String projectName = project.getName();
         Application app = ApplicationManager.getApplication();
 
         PsiFile cmakeListsPsiFile = projectRootDirectory.findFile("CMakeLists.txt");
-        Document cmakeListsDocument = psiDocumentManager.getDocument(cmakeListsPsiFile);
-        int endOfFirstLine = cmakeListsDocument.getCharsSequence().toString().indexOf('\n');
-        app.runWriteAction(() -> {
-            CommandProcessor.getInstance().executeCommand(project, () -> {
-                cmakeListsDocument
-                        .insertString(endOfFirstLine, "\nset(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake)");
-                cmakeListsDocument.insertString(0, "set(PROJECT_NAME " + projectName + ")\n");
+        final Document cmakeListsDocument = psiDocumentManager.getDocument(cmakeListsPsiFile);
+        final int endOfFirstLine = cmakeListsDocument.getCharsSequence().toString().indexOf('\n');
+        app.runWriteAction(new Runnable() {
+            @Override
+            public void run() {
+                CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+                    @Override
+                    public void run() {
+                        cmakeListsDocument
+                                .insertString(endOfFirstLine, "\nset(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake)");
+                        cmakeListsDocument.insertString(0, "set(PROJECT_NAME " + projectName + ")\n");
 
-            }, null, null, cmakeListsDocument);
+                    }
+                }, null, null, cmakeListsDocument);
+            }
         });
 
         PsiFile mainInoFile = projectRootDirectory.findFile(projectName + ".ino");
         PsiFile mainPdeFile = projectRootDirectory.findFile(projectName + ".pde");
         if (mainInoFile == null && mainPdeFile == null) {
-            app.runWriteAction(() -> {
-                PsiFile mainProjectFile = projectRootDirectory.createFile(projectName + ".ino");
-                Document mainProjectDocument = PsiDocumentManager.getInstance(project).getDocument(mainProjectFile);
-                CommandProcessor.getInstance().executeCommand(project, () -> {
-                    mainProjectDocument.setText("#include <Arduino.h>\n\nvoid setup() {\n\n}\n\nvoid loop() {\n\n}");
-                }, null, null, mainProjectDocument);
+            app.runWriteAction(new Runnable() {
+                @Override
+                public void run() {
+                    PsiFile mainProjectFile = projectRootDirectory.createFile(projectName + ".ino");
+                    final Document mainProjectDocument = PsiDocumentManager.getInstance(project)
+                                                                           .getDocument(mainProjectFile);
+                    CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+                        @Override
+                        public void run() {
+                            mainProjectDocument
+                                    .setText("#include <Arduino.h>\n\nvoid setup() {\n\n}\n\nvoid loop() {\n\n}");
+                        }
+                    }, null, null, mainProjectDocument);
+                }
             });
         }
 
-        app.runWriteAction(() -> {
-            if (projectRootDirectory.findSubdirectory("build") == null) {
-                projectRootDirectory.createSubdirectory("build");
+        app.runWriteAction(new Runnable() {
+            @Override
+            public void run() {
+                if (projectRootDirectory.findSubdirectory("build") == null) {
+                    projectRootDirectory.createSubdirectory("build");
+                }
             }
         });
 
-        app.runWriteAction(() -> {
-            CommandProcessor.getInstance().executeCommand(project, () -> {
-                cmakeListsDocument.insertString(cmakeListsDocument
-                        .getTextLength(), "\nset(${PROJECT_NAME}_SKETCH ${PROJECT_NAME}.ino)\ngenerate_arduino_firmware(${PROJECT_NAME})\n");
-            }, null, null, cmakeListsDocument);
+        app.runWriteAction(new Runnable() {
+            @Override
+            public void run() {
+                CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+                    @Override
+                    public void run() {
+                        cmakeListsDocument.insertString(cmakeListsDocument
+                                .getTextLength(), "\nset(${PROJECT_NAME}_SKETCH ${PROJECT_NAME}.ino)\ngenerate_arduino_firmware(${PROJECT_NAME})\n");
+                    }
+                }, null, null, cmakeListsDocument);
+            }
         });
 
-        app.runWriteAction(() -> {
-            PsiDirectory cmakeDirectory = projectRootDirectory.createSubdirectory("cmake");
-            PsiDirectory platformDirectory = cmakeDirectory.createSubdirectory("Platform");
+        app.runWriteAction(new Runnable() {
+            @Override
+            public void run() {
+                PsiDirectory cmakeDirectory = projectRootDirectory.createSubdirectory("cmake");
+                PsiDirectory platformDirectory = cmakeDirectory.createSubdirectory("Platform");
 
-            PsiFile arduinoToolchain = cmakeDirectory.createFile("ArduinoToolchain.cmake");
-            PsiFile arduino = platformDirectory.createFile("Arduino.cmake");
+                PsiFile arduinoToolchain = cmakeDirectory.createFile("ArduinoToolchain.cmake");
+                PsiFile arduino = platformDirectory.createFile("Arduino.cmake");
 
-            VirtualFile arduinoToolchainVirtualFile = arduinoToolchain.getVirtualFile();
-            VirtualFile arduinoVirtualFile = arduino.getVirtualFile();
+                VirtualFile arduinoToolchainVirtualFile = arduinoToolchain.getVirtualFile();
+                VirtualFile arduinoVirtualFile = arduino.getVirtualFile();
 
-            try {
-                OutputStream arduinoToolchainOutputStream = arduinoToolchainVirtualFile.getOutputStream(null);
-                OutputStream arduinoOutputStream = arduinoVirtualFile.getOutputStream(null);
+                try {
+                    OutputStream arduinoToolchainOutputStream = arduinoToolchainVirtualFile.getOutputStream(null);
+                    OutputStream arduinoOutputStream = arduinoVirtualFile.getOutputStream(null);
 
-                IOUtils.copyStreamToStream(ArduinoToolchainFiles.ARDUINO_TOOLCHAIN_CMAKE, arduinoToolchainOutputStream);
-                IOUtils.copyStreamToStream(ArduinoToolchainFiles.ARDUINO_CMAKE, arduinoOutputStream);
-            } catch (IOException e1) {
-                e1.printStackTrace();
+                    IOUtils.copyStreamToStream(ArduinoToolchainFiles.ARDUINO_TOOLCHAIN_CMAKE, arduinoToolchainOutputStream);
+                    IOUtils.copyStreamToStream(ArduinoToolchainFiles.ARDUINO_CMAKE, arduinoOutputStream);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
             }
         });
 
