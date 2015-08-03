@@ -79,7 +79,7 @@ public class ConvertToSketchProject extends AnAction {
                     @Override
                     public void run() {
                         cmakeListsDocument.insertString(cmakeListsDocument
-                                .getTextLength(), "\nset(${PROJECT_NAME}_SKETCH ${PROJECT_NAME}.ino)\ngenerate_arduino_firmware(${PROJECT_NAME})\n");
+                                .getTextLength(), "\nset(${CMAKE_PROJECT_NAME}_SKETCH ${CMAKE_PROJECT_NAME}.ino)\ngenerate_arduino_firmware(${CMAKE_PROJECT_NAME})\n");
                     }
                 }, null, null, cmakeListsDocument);
             }
