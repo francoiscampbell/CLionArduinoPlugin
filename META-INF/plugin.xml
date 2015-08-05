@@ -13,7 +13,7 @@
 
       <br>
 
-      This is a plugin to enable Arduino-CMake integration into CLion. It uses the amazing <a href="https://github.com/queezythegreat/arduino-cmake">Arduino CMake</a>
+      This is a plugin to enable Arduino CMake integration into CLion. It uses the amazing <a href="https://github.com/queezythegreat/arduino-cmake">Arduino CMake</a>
       project from queezythegreat.
       <br>
       The current features are to convert a default CLion project into an Arduino CMake one in one click, and to create new sketch files. When CLion adds the ability to hook into project creation directly, I will be able to make it selectable at project creation time, but for now, we're stuck with having to create a new CLion project and then convert it.
