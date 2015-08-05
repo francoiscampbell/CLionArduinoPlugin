@@ -29,6 +29,7 @@
         <li>Associates .ino and .pde files as C++ source, so you get syntax highlighting and prediction, etc.</li>
         <li>Create a new sketch file in any directory. If you omit the extension, it will add .ino automatically</li>
         <li>Adds import for Arduino.h to all newly created sketch files to enable code completion</li>
+        <li>Compiled with Java 6 for compatibility with OS X out of the box</li>
       </ul>
     ]]>
     </change-notes>

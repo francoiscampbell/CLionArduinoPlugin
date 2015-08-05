@@ -5,6 +5,7 @@ package io.github.francoiscambell.clionarduinoplugin.resources;
  */
 public class Strings {
     public static final String CMAKE_LISTS_FILENAME = "CMakeLists.txt";
+    public static final String CPP_EXT = "cpp";
     public static final String DEFAULT_ARDUINO_SKETCH_CONTENTS = "#include <Arduino.h>\n\nvoid setup() {\n\n}\n\nvoid loop() {\n\n}";
     public static final String ENTER_FILENAME = "Enter filename";
     public static final String ERROR = "Error";

@@ -12,3 +12,4 @@ Future features are to add menu option to easily change the board type, port num
 *   Associates .ino and .pde files as C++ source, so you get syntax highlighting and prediction, etc.
 *   Create a new sketch file in any directory. If you omit the extension, it will add .ino automatically
 *   Adds import for Arduino.h to all newly created sketch files to enable code completion
+*   Compiled with Java 6 for compatibility with OS X out of the box
