@@ -1,3 +1,40 @@
+<!DOCTYPE idea-plugin [
+    <!ELEMENT idea-plugin (id|name|version|vendor|description|change-notes|idea-version|depends|extensions|application-components|project-components|actions)*>
+    <!ATTLIST idea-plugin
+        version CDATA #REQUIRED>
+    <!ELEMENT id (#PCDATA)>
+    <!ELEMENT name (#PCDATA)>
+    <!ELEMENT version (#PCDATA)>
+    <!ELEMENT vendor (#PCDATA)>
+    <!ATTLIST vendor
+        email CDATA #REQUIRED
+        url CDATA #REQUIRED>
+    <!ELEMENT description (#PCDATA)>
+    <!ELEMENT change-notes (#PCDATA)>
+    <!ELEMENT idea-version (#PCDATA)>
+    <!ATTLIST idea-version
+        since-build CDATA #REQUIRED>
+    <!ELEMENT depends (#PCDATA)>
+    <!ELEMENT extensions (#PCDATA)>
+    <!ATTLIST extensions
+        defaultExtensionNs CDATA #REQUIRED>
+    <!ELEMENT application-components (component)*>
+    <!ELEMENT component (implementation-class)*>
+    <!ELEMENT implementation-class (#PCDATA)>
+    <!ELEMENT project-components (#PCDATA)>
+    <!ELEMENT actions (action)*>
+    <!ELEMENT action (add-to-group)*>
+    <!ATTLIST action
+        class CDATA #REQUIRED
+        description CDATA #REQUIRED
+        icon CDATA #REQUIRED
+        id CDATA #REQUIRED
+        text CDATA #REQUIRED>
+    <!ELEMENT add-to-group (#PCDATA)>
+    <!ATTLIST add-to-group
+        anchor CDATA #REQUIRED
+        group-id CDATA #REQUIRED>
+    ]>
 <idea-plugin version="2">
     <id>io.github.francoiscambell.clionarduinoplugin</id>
     <name>CLion Arduino</name>
@@ -5,35 +42,47 @@
     <vendor email="" url="https://github.com/francoiscampbell/CLionArduinoPlugin">Francois Campbell</vendor>
 
     <description><![CDATA[
-      <h1>CLion Arduino Plugin</h1>
-      <br>
+        <h1>CLion Arduino Plugin</h1>
+        <br>
 
-      <a href="https://github.com/francoiscampbell/CLionArduinoPlugin">GitHub</a> |
-      <a href="https://github.com/francoiscampbell/CLionArduinoPlugin/issues">Issues</a>
-      <br>
-      <br>
+        <a href="https://github.com/francoiscampbell/CLionArduinoPlugin">GitHub</a> |
+        <a href="https://github.com/francoiscampbell/CLionArduinoPlugin/issues">Issues</a>
+        <br>
+        <br>
 
-      This is a plugin to enable Arduino CMake integration into CLion. It uses the amazing <a href="https://github.com/queezythegreat/arduino-cmake">Arduino CMake</a>
-      project from queezythegreat.
-      <br>
-      <br>
-      The current features are to convert a default CLion project into an Arduino CMake one in one click, and to create new sketch files. When CLion adds the ability to hook into project creation directly, I will be able to make it selectable at project creation time, but for now, we're stuck with having to create a new CLion project and then convert it.
-      <br>
-      <br>
-      Future features are to add menu option to easily change the board type, port number, etc.
-    ]]></description>
+        This is a plugin to enable Arduino CMake integration into CLion. It uses the amazing <a
+            href="https://github.com/queezythegreat/arduino-cmake">Arduino CMake</a>
+        project from queezythegreat.
+        <br>
+        <br>
+        The current features are to convert a default CLion project into an Arduino CMake one in one click, and to create new sketch files. When CLion adds the ability to hook into project creation directly, I will be able to make it selectable at project creation time, but for now, we're stuck with having to create a new CLion project and then convert it.
+        <br>
+        <br>
+        Future features are to add menu option to easily change the board type, port number, etc.
+        ]]></description>
 
     <change-notes><![CDATA[
-      <b>1.0</b>
-      <ul>
-        <li>Convert a project to Arduino CMake. This replaces CMakeLists.txt with a default one, deletes the default
-        main.cpp file, copies in the Arduino CMake toolchain files, and deletes the build direcory to start fresh</li>
-        <li>Associates .ino and .pde files as C++ source, so you get syntax highlighting and prediction, etc.</li>
-        <li>Create a new sketch file in any directory. If you omit the extension, it will add .ino automatically</li>
-        <li>Adds import for Arduino.h to all newly created sketch files to enable code completion</li>
-        <li>Compiled with Java 6 for compatibility with OS X out of the box</li>
-      </ul>
-    ]]>
+        <b>1.0.2</b>
+        <ul>
+            <li>Removed Groovy runtime, no longer necessary</li>
+        </ul>
+        <b>1.0.1</b>
+        <ul>
+            <li>Fixed organization</li>
+        </ul>
+        <b>1.0</b>
+        <ul>
+            <li>Convert a project to Arduino CMake. This replaces CMakeLists.txt with a default one, deletes the default
+                main.cpp file, copies in the Arduino CMake toolchain files, and deletes the build direcory to start
+                fresh
+            </li>
+            <li>Associates .ino and .pde files as C++ source, so you get syntax highlighting and prediction, etc.</li>
+            <li>Create a new sketch file in any directory. If you omit the extension, it will add .ino automatically
+            </li>
+            <li>Adds import for Arduino.h to all newly created sketch files to enable code completion</li>
+            <li>Compiled with Java 6 for compatibility with OS X out of the box</li>
+        </ul>
+        ]]>
     </change-notes>
 
     <!-- please see https://confluence.jetbrains.com/display/IDEADEV/Build+Number+Ranges for description -->

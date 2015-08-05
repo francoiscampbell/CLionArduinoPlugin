@@ -6,7 +6,15 @@ The current features are to convert a default CLion project into an Arduino CMak
 
 Future features are to add menu option to easily change the board type, port number, etc.
 
-**Version 1.0**
+**1.0.2**
+
+*   Removed Groovy runtime, no longer necessary
+
+**1.0.1**
+
+*   Fixed organization
+
+**1.0**
 
 *   Convert a project to Arduino CMake. This replaces CMakeLists.txt with a default one, deletes the default main.cpp file, copies in the Arduino CMake toolchain files, and deletes the build direcory to start fresh
 *   Associates .ino and .pde files as C++ source, so you get syntax highlighting and prediction, etc.
