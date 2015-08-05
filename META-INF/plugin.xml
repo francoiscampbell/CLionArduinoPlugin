@@ -5,12 +5,32 @@
     <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
 
     <description><![CDATA[
-      Registers .ino and .pde files as C/C++ sources
+      <h1>CLion Arduino Plugin</h1>
+      <br>
+
+      <a href="https://github.com/francoiscampbell/CLionArduinoPlugin">GitHub</a> |
+      <a href="https://github.com/francoiscampbell/CLionArduinoPlugin/issues">Issues</a>
+
+      <br>
+
+      This is a plugin to enable Arduino-CMake integration into CLion. It uses the amazing <a href="https://github.com/queezythegreat/arduino-cmake">Arduino CMake</a>
+      project from queezythegreat. The current features are to convert a default CLion project into an Arduino-CMake one, and to create new sketch files.
+      <br>
+      When CLion adds the ability to hook into project creation directly, I will be able to make it selectable,
+      but for now, we're stuck with having to create a new CLion project and then convert it.
+      <br>
+      Future features are to add menu option to easily change the board type, port number, etc.
     ]]></description>
 
     <change-notes><![CDATA[
-      Add change notes here.<br>
-      <em>most HTML tags may be used</em>
+      <b>1.0</b>
+      <ul>
+        <li>Convert a project to Arduino CMake. This replaces CMakeLists.txt with a default one, deletes the default
+        main.cpp file, copies in the Arduino CMake toolchain files, and deletes the build direcory to start fresh</li>
+        <li>Associates .ino and .pde files as C++ source, so you get syntax highlighting and prediction, etc.</li>
+        <li>Create a new sketch file in any directory. If you omit the extension, it will add .ino automatically</li>
+        <li>Adds import for Arduino.h to all newly created sketch files to enable code completion</li>
+      </ul>
     ]]>
     </change-notes>
 
@@ -28,7 +48,7 @@
     <application-components>
         <!-- Add your application components here -->
         <component>
-            <implementation-class>io.github.francoiscambell.clionarduinoplugin.filetypes.ArduinoFileTypeRegistration
+            <implementation-class>io.github.francoiscambell.clionarduinoplugin.components.ArduinoFileTypeRegistration
             </implementation-class>
         </component>
     </application-components>

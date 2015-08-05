@@ -1,4 +1,4 @@
-package io.github.francoiscambell.clionarduinoplugin.filetypes;
+package io.github.francoiscambell.clionarduinoplugin.components;
 
 import com.intellij.openapi.application.*;
 import com.intellij.openapi.components.*;
