@@ -1,8 +1,8 @@
 <idea-plugin version="2">
     <id>io.github.francoiscambell.clionarduinoplugin</id>
-    <name>Arduino</name>
+    <name>CLion Arduino</name>
     <version>1.0</version>
-    <vendor email="support@yourcompany.com" url="http://www.yourcompany.com">YourCompany</vendor>
+    <vendor email="" url="https://github.com/francoiscampbell/CLionArduinoPlugin">Francois Campbell</vendor>
 
     <description><![CDATA[
       <h1>CLion Arduino Plugin</h1>
