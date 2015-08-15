@@ -96,8 +96,11 @@
          on how to target different products -->
     <depends>com.intellij.modules.clion</depends>
 
+
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <!--<moduleType id="ARDUINO" implementationClass="io.github.francoiscambell.clionarduinoplugin.module.ArduinoModuleType"/>-->
+        <!--<moduleBuilder builderClass="io.github.francoiscambell.clionarduinoplugin.module.ArduinoModuleBuilder"/>-->
     </extensions>
 
     <application-components>
@@ -112,6 +115,7 @@
         <!-- Add your project components here -->
     </project-components>
 
+
     <actions>
         <!-- Add your actions here -->
         <action id="Sketch.New" class="io.github.francoiscambell.clionarduinoplugin.actions.NewSketchFile"
@@ -124,6 +128,13 @@
                 text="Convert to Arduino Sketch project" description="Converts a CMake project to an Arduino Sketch"
                 icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
             <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </action>
+        <action id="SketchProject.New"
+                class="io.github.francoiscambell.clionarduinoplugin.actions.NewArduinoProjectAction"
+                text="New Arduino Sketch Project" description="Creates a new Arduino sketch project"
+                icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
+            <add-to-group group-id="FileMenu" anchor="first"/>
+            <add-to-group group-id="WelcomeScreen.QuickStart" anchor="first"/>
         </action>
     </actions>
 

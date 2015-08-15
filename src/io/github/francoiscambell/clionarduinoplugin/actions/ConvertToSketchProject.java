@@ -37,7 +37,6 @@ public class ConvertToSketchProject extends AnAction {
         deleteBuildOutputDir(project);
 
         CMakeSettings.getInstance(project).setAutoReloadEnabled(true);
-
     }
 
     private void deleteMainCpp(Project project) {
