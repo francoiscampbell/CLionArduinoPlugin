@@ -39,6 +39,6 @@ public class ArduinoSketchFileCreator {
     }
 
     public static void addFileToCMakeLists(final Project project, final VirtualFile file) {
-        CMakeListsEditor.getInstance(project).set("SOURCE_FILES", file.getName());
+        CMakeListsEditor.getInstance(project.getBaseDir()).set("SOURCE_FILES", file.getName());
     }
 }

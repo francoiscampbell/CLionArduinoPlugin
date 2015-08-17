@@ -2,9 +2,17 @@
 
 This is a JetBrains CLion plugin that integrates [Arduino CMake](https://github.com/queezythegreat/arduino-cmake) into the IDE.
 
-The current features are to convert a default CLion project into an Arduino CMake one in one click, and to create new sketch files. When CLion adds the ability to hook into project creation directly, I will be able to make it selectable at project creation time, but for now, we're stuck with having to create a new CLion project and then convert it.
+The current features are to create an Arduino CMake project in one click, and to create new sketch files.
 
-Future features are to add menu option to easily change the board type, port number, etc.
+Future features are to add menu option to easily change the board type, port number, import existing Arduino projects, etc.
+
+**1.2.0**
+
+*   Added new project creation to Welcome Screen and File menu
+
+**1.1.0**
+
+*   Compatiblity with Arduino SDK 1.6 on Mac OS X
 
 **1.0.2**
 

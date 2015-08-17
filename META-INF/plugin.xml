@@ -38,7 +38,7 @@
 <idea-plugin version="2">
     <id>io.github.francoiscambell.clionarduinoplugin</id>
     <name>CLion Arduino</name>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <vendor email="" url="https://github.com/francoiscampbell/CLionArduinoPlugin">Francois Campbell</vendor>
 
     <description><![CDATA[
@@ -55,13 +55,17 @@
         project from queezythegreat.
         <br>
         <br>
-        The current features are to convert a default CLion project into an Arduino CMake one in one click, and to create new sketch files. When CLion adds the ability to hook into project creation directly, I will be able to make it selectable at project creation time, but for now, we're stuck with having to create a new CLion project and then convert it.
+        The current features are to create an Arduino CMake project in one click, and to create new sketch files.
         <br>
         <br>
-        Future features are to add menu option to easily change the board type, port number, etc.
+        Future features are to add menu option to easily change the board type, port number, import existing Arduino projects, etc.
         ]]></description>
 
     <change-notes><![CDATA[
+        <b>1.2.0</b>
+        <ul>
+            <li>Added new project creation to Welcome Screen and File menu</li>
+        </ul>
         <b>1.1.0</b>
         <ul>
             <li>Compatiblity with Arduino SDK 1.6 on Mac OS X</li>
@@ -96,8 +100,11 @@
          on how to target different products -->
     <depends>com.intellij.modules.clion</depends>
 
+
     <extensions defaultExtensionNs="com.intellij">
         <!-- Add your extensions here -->
+        <!--<moduleType id="ARDUINO" implementationClass="io.github.francoiscambell.clionarduinoplugin.module.ArduinoModuleType"/>-->
+        <!--<moduleBuilder builderClass="io.github.francoiscambell.clionarduinoplugin.module.ArduinoModuleBuilder"/>-->
     </extensions>
 
     <application-components>
@@ -112,6 +119,7 @@
         <!-- Add your project components here -->
     </project-components>
 
+
     <actions>
         <!-- Add your actions here -->
         <action id="Sketch.New" class="io.github.francoiscambell.clionarduinoplugin.actions.NewSketchFile"
@@ -119,11 +127,12 @@
                 icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
             <add-to-group group-id="NewGroup" anchor="last"/>
         </action>
-        <action id="SketchProject.Convert"
-                class="io.github.francoiscambell.clionarduinoplugin.actions.ConvertToSketchProject"
-                text="Convert to Arduino Sketch project" description="Converts a CMake project to an Arduino Sketch"
+        <action id="SketchProject.New"
+                class="io.github.francoiscambell.clionarduinoplugin.actions.NewArduinoProjectAction"
+                text="New Arduino Sketch Project" description="Creates a new Arduino sketch project"
                 icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
-            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+            <add-to-group group-id="FileMenu" anchor="first"/>
+            <add-to-group group-id="WelcomeScreen.QuickStart" anchor="first"/>
         </action>
     </actions>
 
