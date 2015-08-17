@@ -128,7 +128,7 @@
             <add-to-group group-id="NewGroup" anchor="last"/>
         </action>
         <action id="SketchProject.New"
-                class="io.github.francoiscambell.clionarduinoplugin.actions.NewArduinoProjectAction"
+                class="io.github.francoiscambell.clionarduinoplugin.actions.NewArduinoProject"
                 text="New Arduino Sketch Project" description="Creates a new Arduino sketch project"
                 icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
             <add-to-group group-id="FileMenu" anchor="first"/>

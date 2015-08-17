@@ -1,14 +1,14 @@
 package io.github.francoiscambell.clionarduinoplugin.actions;
 
+import com.intellij.icons.*;
 import com.intellij.openapi.actionSystem.*;
 import com.intellij.openapi.wm.impl.welcomeScreen.*;
-import io.github.francoiscambell.clionarduinoplugin.resources.icons.*;
 import io.github.francoiscambell.clionarduinoplugin.wizards.*;
 
 /**
  * Created by francois on 15-08-14.
  */
-public class NewArduinoProjectAction extends AnAction {
+public class NewArduinoProject extends AnAction {
     public void update(AnActionEvent event) {
         Presentation presentation = event.getPresentation();
         if (ActionPlaces.isMainMenuOrActionSearch(event.getPlace())) {
@@ -16,7 +16,7 @@ public class NewArduinoProjectAction extends AnAction {
         }
 
         if (NewWelcomeScreen.isNewWelcomeScreen(event)) {
-            event.getPresentation().setIcon(ArduinoIcon.ARDUINO_ICON);
+            event.getPresentation().setIcon(AllIcons.Welcome.CreateNewProject);
         }
 
     }
