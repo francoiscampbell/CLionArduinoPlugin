@@ -38,7 +38,7 @@
 <idea-plugin version="2">
     <id>io.github.francoiscambell.clionarduinoplugin</id>
     <name>CLion Arduino</name>
-    <version>1.1.0</version>
+    <version>1.2.0</version>
     <vendor email="" url="https://github.com/francoiscampbell/CLionArduinoPlugin">Francois Campbell</vendor>
 
     <description><![CDATA[
@@ -55,13 +55,17 @@
         project from queezythegreat.
         <br>
         <br>
-        The current features are to convert a default CLion project into an Arduino CMake one in one click, and to create new sketch files. When CLion adds the ability to hook into project creation directly, I will be able to make it selectable at project creation time, but for now, we're stuck with having to create a new CLion project and then convert it.
+        The current features are to create an Arduino CMake project in one click, and to create new sketch files.
         <br>
         <br>
-        Future features are to add menu option to easily change the board type, port number, etc.
+        Future features are to add menu option to easily change the board type, port number, import existing Arduino projects, etc.
         ]]></description>
 
     <change-notes><![CDATA[
+        <b>1.2.0</b>
+        <ul>
+            <li>Added new project creation to Welcome Screen and File menu</li>
+        </ul>
         <b>1.1.0</b>
         <ul>
             <li>Compatiblity with Arduino SDK 1.6 on Mac OS X</li>
@@ -122,12 +126,6 @@
                 text="Arduino Sketch" description="New Arduino Sketch File"
                 icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
             <add-to-group group-id="NewGroup" anchor="last"/>
-        </action>
-        <action id="SketchProject.Convert"
-                class="io.github.francoiscambell.clionarduinoplugin.actions.ConvertToSketchProject"
-                text="Convert to Arduino Sketch project" description="Converts a CMake project to an Arduino Sketch"
-                icon="/io/github/francoiscambell/clionarduinoplugin/resources/icons/Arduino_Logo.png">
-            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
         </action>
         <action id="SketchProject.New"
                 class="io.github.francoiscambell.clionarduinoplugin.actions.NewArduinoProjectAction"

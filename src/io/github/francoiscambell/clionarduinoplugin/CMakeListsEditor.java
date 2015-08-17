@@ -4,33 +4,33 @@ import com.intellij.openapi.application.*;
 import com.intellij.openapi.command.*;
 import com.intellij.openapi.editor.*;
 import com.intellij.openapi.fileEditor.*;
-import com.intellij.openapi.project.*;
 import com.intellij.openapi.vfs.*;
-import io.github.francoiscambell.clionarduinoplugin.resources.*;
+
+import java.util.*;
 
 /**
  * Created by francois on 15-08-04.
  */
 public class CMakeListsEditor {
-    private static CMakeListsEditor INSTANCE;
-    private Project project;
+    private static Map<VirtualFile, CMakeListsEditor> INSTANCES = new WeakHashMap<VirtualFile, CMakeListsEditor>();
+    private VirtualFile cMakeListsVirtualFile;
 
-    private CMakeListsEditor(Project project) {
-        this.project = project;
+    private CMakeListsEditor(VirtualFile cMakeLists) {
+        this.cMakeListsVirtualFile = cMakeLists;
     }
 
-    public static CMakeListsEditor getInstance(Project project) {
-        if (INSTANCE == null) {
-            INSTANCE = new CMakeListsEditor(project);
+    public static CMakeListsEditor getInstance(VirtualFile cMakeLists) {
+        if (!INSTANCES.containsKey(cMakeLists)) {
+            INSTANCES.put(cMakeLists, new CMakeListsEditor(cMakeLists));
         }
-        return INSTANCE;
+        return INSTANCES.get(cMakeLists);
     }
 
-    public VirtualFile getCMakeListsVirtualFile() {
-        return project.getBaseDir().findChild(Strings.CMAKE_LISTS_FILENAME);
+    private VirtualFile getCMakeListsVirtualFile() {
+        return cMakeListsVirtualFile;
     }
 
-    public Document getCMakeListsDocument() {
+    private Document getCMakeListsDocument() {
         return FileDocumentManager.getInstance().getDocument(getCMakeListsVirtualFile());
     }
 
@@ -39,10 +39,11 @@ public class CMakeListsEditor {
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             @Override
             public void run() {
-                CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+                CommandProcessor.getInstance().executeCommand(null, new Runnable() {
                     @Override
                     public void run() {
-                        cMakeLists.deleteString(0, getCMakeListsDocument().getTextLength());
+                        cMakeLists.deleteString(0, cMakeLists.getTextLength());
+                        FileDocumentManager.getInstance().saveDocument(cMakeLists);
                     }
                 }, null, null, cMakeLists);
             }
@@ -56,10 +57,11 @@ public class CMakeListsEditor {
         ApplicationManager.getApplication().runWriteAction(new Runnable() {
             @Override
             public void run() {
-                CommandProcessor.getInstance().executeCommand(project, new Runnable() {
+                CommandProcessor.getInstance().executeCommand(null, new Runnable() {
                     @Override
                     public void run() {
                         cMakeLists.insertString(lineEndOffset, text + "\n");
+                        FileDocumentManager.getInstance().saveDocument(cMakeLists);
                     }
                 }, null, null, cMakeLists);
             }

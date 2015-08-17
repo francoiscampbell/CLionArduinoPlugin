@@ -23,7 +23,6 @@ public class NewArduinoProjectAction extends AnAction {
 
     @Override
     public void actionPerformed(AnActionEvent e) {
-        NewArduinoProjectWizard wizard = new NewArduinoProjectWizard();
-        wizard.runWizard();
+        (new NewArduinoProjectWizard()).runWizard();
     }
 }
