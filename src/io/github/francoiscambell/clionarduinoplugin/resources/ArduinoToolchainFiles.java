@@ -4,6 +4,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import org.apache.commons.io.IOUtils;
 
+import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,18 +32,37 @@ public class ArduinoToolchainFiles {
                     VirtualFile arduinoToolchain = cmakeDirectory.createChildData(this, "ArduinoToolchain.cmake");
                     VirtualFile arduino = platformDirectory.createChildData(this, "Arduino.cmake");
 
-                    try (OutputStream arduinoToolchainOutputStream = arduinoToolchain.getOutputStream(this);
-                         OutputStream arduinoOutputStream = arduino.getOutputStream(this);
-                         InputStream arduinoToolchainInputStream = getArduinoToolchainCmake();
-                         InputStream arduinoInputStream = getArduinoCmake()) {
+                    OutputStream arduinoToolchainOutputStream = arduinoToolchain.getOutputStream(this);
+                    OutputStream arduinoOutputStream = arduino.getOutputStream(this);
 
+                    InputStream arduinoToolchainInputStream = getArduinoToolchainCmake();
+                    InputStream arduinoInputStream = getArduinoCmake();
+
+                    try {
                         IOUtils.copy(arduinoToolchainInputStream, arduinoToolchainOutputStream);
                         IOUtils.copy(arduinoInputStream, arduinoOutputStream);
+                    } finally {
+                        closeStreams(arduinoToolchainOutputStream,
+                                arduinoOutputStream,
+                                arduinoToolchainInputStream,
+                                arduinoInputStream);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private static void closeStreams(Closeable... streams) {
+        for (Closeable c : streams) {
+            if (c != null) {
+                try {
+                    c.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 }
