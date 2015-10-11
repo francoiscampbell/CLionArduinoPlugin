@@ -4,6 +4,12 @@ This is a JetBrains CLion plugin that integrates [Arduino CMake](https://github.
 
 The current features are to create an Arduino CMake project in one click, and to create new sketch files.
 
+For those asking how to upload, you need to specify the serial port in the CMakeLists.txt file. For example:
+set(${CMAKE_PROJECT_NAME}_BOARD uno)
+set(${CMAKE_PROJECT_NAME}_PORT /dev/ttys0)
+
+This will create the 'upload' configuration in your Run Configurations and you can click the Run button or use the keyboard shortcut to upload.
+
 Future features are to add menu option to easily change the board type, port number, import existing Arduino projects, etc.
 
 **1.2.0**
