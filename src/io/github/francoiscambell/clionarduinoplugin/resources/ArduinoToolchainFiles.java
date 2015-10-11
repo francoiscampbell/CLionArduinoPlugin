@@ -1,10 +1,12 @@
 package io.github.francoiscambell.clionarduinoplugin.resources;
 
-import com.intellij.openapi.application.*;
-import com.intellij.openapi.vfs.*;
-import org.apache.sanselan.util.*;
+import com.intellij.openapi.application.ApplicationManager;
+import com.intellij.openapi.vfs.VirtualFile;
+import org.apache.commons.io.IOUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Created by francois on 15-08-03.
@@ -29,11 +31,14 @@ public class ArduinoToolchainFiles {
                     VirtualFile arduinoToolchain = cmakeDirectory.createChildData(this, "ArduinoToolchain.cmake");
                     VirtualFile arduino = platformDirectory.createChildData(this, "Arduino.cmake");
 
-                    OutputStream arduinoToolchainOutputStream = arduinoToolchain.getOutputStream(this);
-                    OutputStream arduinoOutputStream = arduino.getOutputStream(this);
+                    try (OutputStream arduinoToolchainOutputStream = arduinoToolchain.getOutputStream(this);
+                         OutputStream arduinoOutputStream = arduino.getOutputStream(this);
+                         InputStream arduinoToolchainInputStream = getArduinoToolchainCmake();
+                         InputStream arduinoInputStream = getArduinoCmake()) {
 
-                    IOUtils.copyStreamToStream(getArduinoToolchainCmake(), arduinoToolchainOutputStream);
-                    IOUtils.copyStreamToStream(getArduinoCmake(), arduinoOutputStream);
+                        IOUtils.copy(arduinoToolchainInputStream, arduinoToolchainOutputStream);
+                        IOUtils.copy(arduinoInputStream, arduinoOutputStream);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
