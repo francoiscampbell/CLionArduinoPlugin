@@ -118,7 +118,12 @@ public class NewArduinoProjectWizard extends CMakeProjectWizard {
         if (project == null) {
             return;
         }
+        deleteBuildOutputDir(project);
         (new OpenFileDescriptor(project, cMakeLists)).navigate(false);
         (new OpenFileDescriptor(project, mainSketchFile)).navigate(true);
+    }
+
+    private void deleteBuildOutputDir(Project project) {
+        FileUtil.delete(CMakeWorkspace.getInstance(project).getProjectGeneratedDir());
     }
 }
