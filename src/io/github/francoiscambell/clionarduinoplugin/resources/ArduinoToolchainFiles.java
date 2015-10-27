@@ -56,13 +56,7 @@ public class ArduinoToolchainFiles {
 
     private static void closeStreams(Closeable... streams) {
         for (Closeable c : streams) {
-            if (c != null) {
-                try {
-                    c.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            IOUtils.closeQuietly(c);
         }
     }
 }
