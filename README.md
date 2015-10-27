@@ -13,6 +13,10 @@ This will create the 'upload' configuration in your Run Configurations and you c
 
 Future features are to add menu option to easily change the board type, port number, import existing Arduino projects, etc.
 
+**1.2.1**
+
+*   Re-compiled for Java 6
+
 **1.2.0**
 
 *   Added new project creation to Welcome Screen and File menu
