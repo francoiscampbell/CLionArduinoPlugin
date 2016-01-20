@@ -1,3 +1,4 @@
 [submodule "src/io/github/francoiscambell/clionarduinoplugin/resources/arduino-cmake"]
 	path = src/io/github/francoiscambell/clionarduinoplugin/resources/arduino-cmake
 	url = git://github.com/francoiscampbell/arduino-cmake.git
+	ignore = dirty
