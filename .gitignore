@@ -49,4 +49,6 @@ crashlytics-build.properties
 
 /*.zip
 
+*.DS_Store
+
 
