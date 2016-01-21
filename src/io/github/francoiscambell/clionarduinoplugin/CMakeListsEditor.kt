@@ -5,15 +5,19 @@ import com.intellij.openapi.command.CommandProcessor
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.vfs.VirtualFile
+import io.github.francoiscambell.clionarduinoplugin.exceptions.NoSuchDocumentException
 import java.util.*
 
 /**
  * Created by francois on 15-08-04.
  */
-class CMakeListsEditor private constructor(private val cMakeListsVirtualFile: VirtualFile) {
+class CMakeListsEditor {
+    constructor(cMakeListsVirtualFile: VirtualFile) {
+        cMakeListsDocument = FileDocumentManager.getInstance().getDocument(cMakeListsVirtualFile)
+                ?: throw NoSuchDocumentException(cMakeListsVirtualFile)
+    }
 
     private val cMakeListsDocument: Document
-        get() = FileDocumentManager.getInstance().getDocument(cMakeListsVirtualFile)
 
     fun clear() {
         val cMakeLists = cMakeListsDocument
@@ -82,7 +86,7 @@ class CMakeListsEditor private constructor(private val cMakeListsVirtualFile: Vi
             if (!INSTANCES.containsKey(cMakeLists)) {
                 INSTANCES.put(cMakeLists, CMakeListsEditor(cMakeLists))
             }
-            return INSTANCES[cMakeLists]
+            return INSTANCES[cMakeLists]!!
         }
     }
 }

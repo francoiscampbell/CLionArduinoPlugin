@@ -84,33 +84,34 @@ class NewArduinoProjectWizard : CMakeProjectWizard("New Arduino Sketch Project",
 
         @Throws(IOException::class)
         fun createProject(projectName: String, projectRootPath: String): String {
-            var projectName = projectName
             val projectRoot = File(projectRootPath)
             val cMakeLists = File(projectRoot, "CMakeLists.txt")
             if (!cMakeLists.exists() && !cMakeLists.createNewFile()) {
                 throw IOException("Cannot create file " + cMakeLists)
             } else {
-                projectName = FileUtil.sanitizeFileName(projectName)
-                val mainSketchFile = File(projectRoot, projectName + ".ino")
+                val sanitizedProjectName = FileUtil.sanitizeFileName(projectName)
+                val mainSketchFile = File(projectRoot, sanitizedProjectName + ".ino")
                 if (!mainSketchFile.exists() && !mainSketchFile.createNewFile()) {
                     throw IOException("Cannot create file " + mainSketchFile)
                 } else {
                     FileUtil.writeToFile(mainSketchFile, Strings.DEFAULT_ARDUINO_SKETCH_CONTENTS)
 
-                    val cMakeListsVirtualFile = VfsUtil.findFileByIoFile(cMakeLists, true)
+                    val cMakeListsVirtualFile = VfsUtil.findFileByIoFile(cMakeLists, true) ?: return ""
                     val cMakeListsEditor = CMakeListsEditor.getInstance(cMakeListsVirtualFile)
                     cMakeListsEditor.clear()
                     cMakeListsEditor.minVersion("2.8.4")
-                    cMakeListsEditor.set("CMAKE_TOOLCHAIN_FILE", "${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake")
-                    cMakeListsEditor.set("PROJECT_NAME", projectName)
-                    cMakeListsEditor.project("${PROJECT_NAME}")
+                    cMakeListsEditor.set("CMAKE_TOOLCHAIN_FILE", "\${CMAKE_SOURCE_DIR}/cmake/ArduinoToolchain.cmake")
+                    cMakeListsEditor.set("PROJECT_NAME", sanitizedProjectName)
+                    cMakeListsEditor.project("\${PROJECT_NAME}")
                     cMakeListsEditor.blankLine()
-                    cMakeListsEditor.set("${CMAKE_PROJECT_NAME}_SKETCH", projectName + ".ino")
-                    cMakeListsEditor.method("generate_arduino_firmware", "${CMAKE_PROJECT_NAME}")
+                    cMakeListsEditor.set("\${CMAKE_PROJECT_NAME}_SKETCH", sanitizedProjectName + ".ino")
+                    cMakeListsEditor.method("generate_arduino_firmware", "\${CMAKE_PROJECT_NAME}")
 
-                    ArduinoToolchainFiles.copyToDirectory(VfsUtil.findFileByIoFile(projectRoot, true))
 
-                    return projectName
+                    val projectRootVirtualFile = VfsUtil.findFileByIoFile(projectRoot, true) ?: return ""
+                    ArduinoToolchainFiles.copyToDirectory(projectRootVirtualFile)
+
+                    return sanitizedProjectName
                 }
             }
         }

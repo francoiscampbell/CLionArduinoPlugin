@@ -5,11 +5,13 @@ import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.actionSystem.CommonDataKeys
 import com.intellij.openapi.actionSystem.LangDataKeys
 import com.intellij.openapi.application.ApplicationManager
+import com.intellij.openapi.command.CommandProcessor
+import com.intellij.openapi.fileEditor.FileDocumentManager
 import com.intellij.openapi.fileEditor.FileEditorManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.intellij.openapi.vfs.VirtualFile
-import io.github.francoiscambell.clionarduinoplugin.ArduinoSketchFileCreator
+import io.github.francoiscambell.clionarduinoplugin.CMakeListsEditor
 import io.github.francoiscambell.clionarduinoplugin.resources.Strings
 import io.github.francoiscambell.clionarduinoplugin.resources.icons.ArduinoIcon
 import java.io.IOException
@@ -26,13 +28,13 @@ class NewSketchFile : AnAction() {
         val directory = view.orChooseDirectory ?: return
         val directoryVirtualFile = directory.virtualFile
 
-        var loop = false
+        var noFilenameFoundYet: Boolean
         do {
-            var filename: String? = getDesiredFilename(project) ?: return //cancel
+            var filename = getDesiredFilename(project)
             if (filename.isEmpty()) {
                 //no name entered
                 showEmptyFilenameError(project)
-                loop = true
+                noFilenameFoundYet = true
                 continue
             }
             filename = correctExtension(filename) //add .ino if the current filename doesn't end with .ino or .pde
@@ -40,22 +42,23 @@ class NewSketchFile : AnAction() {
             val existingFile = directoryVirtualFile.findChild(filename)
             if (existingFile != null) {
                 val overwriteChoice = getOverwriteChoice(project) //ask to overwrite file
-                when (overwriteChoice) {
-                    Messages.YES -> {
-                        deleteVirtualFile(existingFile)
-                        loop = false
-                    }
-                    Messages.NO -> {
-                        loop = true
-                        continue
-                    }
-                    Messages.CANCEL -> return
+                if (overwriteChoice == Messages.YES) {
+                    deleteVirtualFile(existingFile)
+                    noFilenameFoundYet = false
+                } else if (overwriteChoice == Messages.NO) {
+                    noFilenameFoundYet = true
+                    continue
+                } else if (overwriteChoice == Messages.CANCEL) {
+                    return
                 }
             }
-            val sketch = ArduinoSketchFileCreator.createSketchFileWithName(project, directoryVirtualFile, filename)
-            //            ArduinoSketchFileCreator.addFileToCMakeLists(project, sketch); //not sure if i need to do this or not
-            FileEditorManager.getInstance(project).openFile(sketch, true, true) //open in editor
-        } while (loop)
+            val sketch = createSketchFileWithName(project, directoryVirtualFile, filename)
+            noFilenameFoundYet = false
+            if (sketch != null) {
+                //            ArduinoSketchFileCreator.addFileToCMakeLists(project, sketch); //not sure if i need to do this or not
+                FileEditorManager.getInstance(project).openFile(sketch, true, true) //open in editor
+            }
+        } while (noFilenameFoundYet)
     }
 
     private fun showEmptyFilenameError(project: Project) {
@@ -67,15 +70,15 @@ class NewSketchFile : AnAction() {
     }
 
     private fun getDesiredFilename(project: Project): String {
-        return Messages.showInputDialog(project, Strings.ENTER_FILENAME, Strings.SKETCH_NAME, ArduinoIcon.ARDUINO_ICON)
+        return Messages.showInputDialog(project, Strings.ENTER_FILENAME, Strings.SKETCH_NAME, ArduinoIcon.ARDUINO_ICON) ?: ""
     }
 
     private fun correctExtension(filename: String): String {
-        var filename = filename
+        var correctFilename = filename
         if (!(filename.endsWith(Strings.DOT_INO_EXT) || filename.endsWith(Strings.DOT_PDE_EXT))) {
-            filename = filename + Strings.DOT_INO_EXT
+            correctFilename = filename + Strings.DOT_INO_EXT
         }
-        return filename
+        return correctFilename
     }
 
 
@@ -91,5 +94,24 @@ class NewSketchFile : AnAction() {
             }
         }
 
+    }
+
+    private fun createSketchFileWithName(project: Project, directory: VirtualFile, name: String): VirtualFile? {
+        ApplicationManager.getApplication().runWriteAction {
+            try {
+                val sketch = directory.createChildData(this, name)
+                val sketchDocument = FileDocumentManager.getInstance().getDocument(sketch)
+                if (sketchDocument != null) {
+                    CommandProcessor.getInstance().executeCommand(project, { sketchDocument.setText(Strings.DEFAULT_ARDUINO_SKETCH_CONTENTS) }, null, null, sketchDocument)
+                }
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+        }
+        return directory.findChild(name)
+    }
+
+    private fun addFileToCMakeLists(project: Project, file: VirtualFile) {
+        CMakeListsEditor.getInstance(project.baseDir)["SOURCE_FILES"] = file.name
     }
 }
