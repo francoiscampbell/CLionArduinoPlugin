@@ -18,6 +18,10 @@ It seems that arduino-cmake (the backing plugin) development has pretty much sta
 
 ## Release Notes
 
+**1.2.2**
+
+*   Fixed .ino and .pde files not refactorable. Increased compatibility for Servo library</li>
+
 **1.2.1**
 
 *   Re-compiled for Java 6

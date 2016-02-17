@@ -38,7 +38,7 @@
 <idea-plugin version="2">
     <id>io.github.francoiscambell.clionarduinoplugin</id>
     <name>CLion Arduino</name>
-    <version>1.2.1</version>
+    <version>1.2.2</version>
     <vendor email="" url="https://github.com/francoiscampbell/CLionArduinoPlugin">Francois Campbell</vendor>
 
     <description><![CDATA[
@@ -62,6 +62,10 @@
         ]]></description>
 
     <change-notes><![CDATA[
+        <b>1.2.2</b>
+        <ul>
+            <li>Fixed .ino and .pde files not refactorable. Increased compatibility for Servo library</li>
+        </ul>
         <b>1.2.1</b>
         <ul>
             <li>Re-compiled for Java 6</li>
