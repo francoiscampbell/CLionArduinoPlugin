@@ -13,6 +13,11 @@ This will create the 'upload' configuration in your Run Configurations and you c
 
 Future features are to add menu option to easily change the board type, port number, import existing Arduino projects, etc.
 
+## Update on status:
+It seems that arduino-cmake (the backing plugin) development has pretty much stalled, which is the root cause of most of the issues here, so I've got my own fork and I've tried to implement most of the fixes from previous forks of the project, which are also mostly dead. This project was just an exercise in making a JetBrains plugin that turned out well, but I don't have a lot of free time on my hands to do this though, what with full-time university and what not, so I can't give a definite date on what will be fixed when, but I will make an effort to get it done.
+
+## Release Notes
+
 **1.2.1**
 
 *   Re-compiled for Java 6
