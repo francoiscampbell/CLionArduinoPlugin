@@ -49,10 +49,7 @@
         <a href="https://github.com/francoiscampbell/CLionArduinoPlugin/issues">Issues</a>
         <br>
         <br>
-
-        This is a plugin to enable Arduino CMake integration into CLion. It uses the amazing <a
-            href="https://github.com/queezythegreat/arduino-cmake">Arduino CMake</a>
-        project from queezythegreat.
+        This is a plugin that integrates <a href="https://github.com/francoiscampbell/arduino-cmake">Arduino CMake</a> into the IDE.
         <br>
         <br>
         The current features are to create an Arduino CMake project in one click, and to create new sketch files.

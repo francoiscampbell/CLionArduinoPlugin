@@ -1,6 +1,6 @@
 #CLion Arduino Plugin
 
-This is a JetBrains CLion plugin that integrates [Arduino CMake](https://github.com/queezythegreat/arduino-cmake) into the IDE.
+This is a JetBrains CLion plugin that integrates [Arduino CMake](https://github.com/francoiscampbell/arduino-cmake) into the IDE.
 
 The current features are to create an Arduino CMake project in one click, and to create new sketch files.
 
